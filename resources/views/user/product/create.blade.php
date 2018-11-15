@@ -70,7 +70,8 @@
 					<label for="sold_price">Sold Price</label>
 					<input 	id="sold_price" 
 							type="number"
-							min="0" 
+							min="0"
+							step="0.01"
 							class="form-control" 
 							name="sold_price" 
 							value="{{ old('sold_price') }}"
@@ -87,7 +88,8 @@
 					<label for="item_cost">Item Cost</label>
 					<input 	id="item_cost" 
 							type="number"
-							min="0" 
+							min="0"
+							step="0.01"
 							class="form-control" 
 							name="item_cost" 
 							value="{{ old('item_cost') }}"
