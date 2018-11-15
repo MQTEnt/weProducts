@@ -132,7 +132,7 @@
 				</div>
 
 				<div class="form-group{{ $errors->has('note') ? ' has-error' : '' }}">
-					<label for="note">Code Coupon</label>
+					<label for="note">Note</label>
 					<textarea	
 						id="note" 
 						class="form-control" 
