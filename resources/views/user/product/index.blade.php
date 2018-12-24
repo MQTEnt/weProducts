@@ -4,13 +4,18 @@
 @section('small-title', 'List')
 
 @section('main-content')
+	<!-- Alert... -->
+	@if(session()->has('message'))
+    <div class="callout callout-success">
+        {{ session()->get('message') }}
+    </div>
+	@endif
+	<!-- ./Alert -->
 	<div class="row margin-bottom">
 	<div class="col-lg-2">
 		<a class="btn btn-block btn-primary" href="{{route('product.create')}}"><i class="fa fa-archive"></i> Add new</a>
 	</div>
 </div>
-
-<!-- Alert... -->
 
 <!-- table -->
 <div class="box">
@@ -45,7 +50,8 @@
 				<th>Sold Price</th>
 				<th>Item Cost</th>
 				<th>Count Down</th>
-				<th style='text-align: center'>Detail</th>
+				<th class="text-center">Detail</th>
+				<th class="text-center">Delete</th>
 			</tr>
 			@foreach($products as $product)
 			<tr style="cursor: pointer">
@@ -59,17 +65,72 @@
 					<td>{{$product->expiredDay}}</td>
 				@else
 					@if($product->expired_day <= 0)
-						<td style="color: red;"><strong><i>Expired</i><strong></td>
+						<td class="text-danger"><strong><i>Expired</i><strong></td>
 					@else
-						<td style="color: red;"><strong>{{$product->expiredDay}}<strong></td>
+						<td class="text-danger"><strong>{{$product->expiredDay}}<strong></td>
 					@endif
 				@endif
-				<td style='text-align: center'><a href=""><i class="fa fa-chevron-circle-right"></i></a></td>
+				<td class="text-center"><a href=""><i class="fa fa-chevron-circle-right"></i></a></td>
+				<td class="text-center">
+					<span
+					style="padding: 0 1rem;"
+					class="btn-delete-product text-danger"
+					meta-product-id="{{$product->id}}"
+					meta-product-name="{{$product->name}}"
+					data-toggle="modal"
+					data-target="#modal-default">
+						<i class="fa fa-trash-o"></i>
+					</span>
+				</td>
 			</tr>
 			@endforeach
 		</table>
 	</div>
 	@endif
 </div>
+{{ $products->links() }}
 <!-- /.table -->
+
+<!-- Delete product modal -->
+<div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Delete Alert</h4>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure to delete <strong id="text-delete-product-name" class="text-danger"></strong>?</p>
+			</div>
+			<div class="modal-footer">
+				<div class="col-sm-2">
+					<form style="display: inline-block;" action="{{route('product.delete', $product->id)}}" method="POST">
+					    <input type="hidden" name="_method" value="DELETE">
+					    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+					    <button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				</div>
+				<div class="col-sm-2 col-sm-offset-8">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+	<!-- /.modal -->
+@stop
+
+@section('javascript-section')
+<script type="text/javascript">
+ $(document).ready(function(){
+ 	$('.btn-delete-product').click(function(){
+ 		$('#text-delete-product-name').text($(this).attr('meta-product-name'));
+ 	});
+
+ 	$('.callout-success').first().fadeOut(3000);
+ });
+</script>
 @stop

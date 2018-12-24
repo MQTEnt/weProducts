@@ -34,10 +34,16 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 			'note' => $request->note,
 			'expiry_date' => $expiry_date,
 		]);
-		return redirect()->route('product.index'); 
+		return redirect()->route('product.index')->with('message', 'Created successfully!');
 	})->name('product.store');
 	Route::get('product/index', function() {
-		$products = App\Product::all();
+		$products = App\Product::paginate(10);
 		return view('user.product.index', ['products' => $products]);
 	})->name('product.index');
+	Route::delete('product/{product_id}', function($product_id){
+		$product = App\Product::findOrFail($product_id);
+		if ($product->delete()) {
+			return redirect()->route('product.index')->with('message', 'Deleted successfully!');
+		}
+	})->name('product.delete');;
 });

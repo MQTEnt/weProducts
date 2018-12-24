@@ -48,5 +48,6 @@
 <script src="/js/user/bootstrap/bootstrap.min.js"></script>
 <!-- AdminLTE App //TMQ: Effect when resize -->
 <script src="/js/user/app.min.js"></script> 
+@yield('javascript-section')
 </body>
 </html>
