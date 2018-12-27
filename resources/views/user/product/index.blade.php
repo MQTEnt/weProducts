@@ -105,10 +105,10 @@
 			</div>
 			<div class="modal-footer">
 				<div class="col-sm-2">
-					<form style="display: inline-block;" action="{{route('product.delete', $product->id)}}" method="POST">
+					<form id="deleteForm" style="display: inline-block;" action="{{route('product.delete', '%product_id%')}}" method="POST">
 					    <input type="hidden" name="_method" value="DELETE">
 					    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-					    <button type="submit" class="btn btn-danger">Delete</button>
+					    <button id="acceptDeleteBtn" type="button" class="btn btn-danger">Delete</button>
 					</form>
 				</div>
 				<div class="col-sm-2 col-sm-offset-8">
@@ -126,11 +126,39 @@
 @section('javascript-section')
 <script type="text/javascript">
  $(document).ready(function(){
+ 	var deleteProductId = '';
  	$('.btn-delete-product').click(function(){
  		$('#text-delete-product-name').text($(this).attr('meta-product-name'));
+ 		deleteProductId = $(this).attr('meta-product-id');
  	});
 
  	$('.callout-success').first().fadeOut(3000);
+
+ 	$('#acceptDeleteBtn').click(function(){
+ 		var routeDeleteProduct = $('#deleteForm').attr("action");
+ 		$('#deleteForm').attr("action", routeDeleteProduct.replace('%product_id%', deleteProductId));
+ 		$('#deleteForm').submit();
+ 	});
+
+ 	$('.checkNotiButton').click(function(){
+ 		$(this).parent().fadeOut(500);
+ 	});
+
+ 	// Toggle class for hide/show notification list
+ 	$('li.dropdown.notifications-menu a').on('click', function (event) {
+    	$(this).parent().toggleClass('open');
+	});
+
+ 	// Event when click outside notification list
+	$('body').on('click', function (e) {
+	    if (!$('li.dropdown.notifications-menu').is(e.target) 
+	        && $('li.dropdown.notifications-menu').has(e.target).length === 0 
+	        && $('.open').has(e.target).length === 0
+	    ) {
+	        $('li.dropdown.notifications-menu').removeClass('open');
+	    	$('li.dropdown.notifications-menu li.footer').removeClass('open');
+	    }
+	});
  });
 </script>
 @stop

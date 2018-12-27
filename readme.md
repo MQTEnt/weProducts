@@ -16,3 +16,10 @@
 - `> grant all on *.* to 'your_root_username'@'%';`
 - Check user with host: `> SELECT host, user FROM mysql.user;`
 - Run `> php artisan migrate` again
+
+##### If it has error:
+> SQLSTATE[HY000] [2054] The server requested authentication method unknown to the client
+###### Run container again with addition option:
+- > `docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=password -d mysql/mysql-server:latest mysqld --default-authentication-plugin=mysql_native_password`
+- Create User and Database again...
+- Run `> php artisan migrate`
