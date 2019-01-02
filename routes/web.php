@@ -46,4 +46,9 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 			return redirect()->route('product.index')->with('message', 'Deleted successfully!');
 		}
 	})->name('product.delete');;
+
+	// Route for checking
+	Route::get('checkRoute', function() {
+		return Session::get('savingAuthPassport');
+	});
 });
