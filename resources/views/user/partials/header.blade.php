@@ -19,31 +19,13 @@
         <li class="dropdown notifications-menu">
           <a href="#" class="dropdown-toggle">
             <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">1</span>
+            <span id="notification-quantity" class="label label-warning"></span>
           </a>
           <ul class="dropdown-menu">
-            <li class="header">You have 1 notifications</li>
+            <li id="notification-quantity-content" class="header">You have 0 notifications</li>
             <li>
               <!-- inner menu: contains the actual data -->
-              <ul class="menu">
-                <li style="padding-left: 1rem">
-                  5 new members joined today
-                  <button class="checkNotiButton">
-                     <i style="cursor: pointer" class="fa fa-check-circle-o text-success"></i>
-                  </button>
-                </li>
-                <li style="padding-left: 1rem">
-                  4 new members joined today
-                  <button class="checkNotiButton">
-                     <i style="cursor: pointer" class="fa fa-check-circle-o text-success"></i>
-                  </button>
-                </li>
-                <li style="padding-left: 1rem">
-                  3 new members joined today
-                  <button class="checkNotiButton">
-                     <i style="cursor: pointer" class="fa fa-check-circle-o text-success"></i>
-                  </button>
-                </li>
+              <ul id="notifications-list" class="menu">
               </ul>
             </li>
             <li class="footer"><a href="#">View all</a></li>
@@ -53,7 +35,7 @@
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="/img/user.png" class="user-image" alt="User Image">
-            <span class="hidden-xs">Name</span>
+            <span class="hidden-xs">{{$user->name}}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
@@ -62,7 +44,7 @@
 
               <p>
                 Info...
-                <small>Join date</small>
+                <small>Join date: {{date('d-m-Y', strtotime($user->created_at))}}</small>
               </p>
             </li>
             <!-- Menu Body -->

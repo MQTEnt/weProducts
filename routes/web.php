@@ -34,6 +34,17 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 			'note' => $request->note,
 			'expiry_date' => $expiry_date,
 		]);
+
+		$user = Auth::user();
+
+		if (isset($newProduct)) {
+			$newNoti = App\Notification::create([
+				'checked' => false,
+				'content' => '<strong><i>'.$user->name.'</i></strong> creared new product: '.'<strong>'.$newProduct->name.'</strong>',
+				'product_id' => $newProduct->id,
+				'user_id' => $user->id
+			]);
+		}
 		return redirect()->route('product.index')->with('message', 'Created successfully!');
 	})->name('product.store');
 	Route::get('product/index', function() {

@@ -140,9 +140,31 @@
  		$('#deleteForm').submit();
  	});
 
- 	$('.checkNotiButton').click(function(){
- 		$(this).parent().fadeOut(500);
- 	});
+ 	$('#notifications-list').on('click', '.checkNotiButton',function() {
+ 		var token = $("meta[name=access_token]").attr('content');
+ 		var checkNotiButton = $(this);
+ 		var notiId = checkNotiButton.parent().attr('meta-noti-id');
+ 		$.ajax({
+	        type: 'PUT',
+	        url: '/api/auth/notifications/'+notiId,
+	        headers: {
+	        	'Content-Type': 'x-www-form-urlencoded',
+        		'Accept': 'application/json',
+	        	"Authorization": token
+	        },
+	        data: {},
+	        success: function (data) {
+	        	if (data.status) {
+	        		notifications = notifications.filter(function (value) {
+	        			return value.id.toString() !== notiId.toString();
+	        		});
+	        		$('#notification-quantity').text(notifications.length);
+          			$('#notification-quantity-content').html('You have <strong>' + notifications.length + '</strong> notifications');
+	        		checkNotiButton.parent().fadeOut(500);
+	        	}
+	        }
+	    });
+	});
 
  	// Toggle class for hide/show notification list
  	$('li.dropdown.notifications-menu a').on('click', function (event) {

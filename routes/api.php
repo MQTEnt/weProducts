@@ -24,5 +24,17 @@ Route::group([
     ], function() {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        Route::get('notifications', function () {
+        	$notifications = App\Notification::where('checked', false)->get();
+        	return $notifications;
+        });
+        Route::put('notifications/{notification_id}', function ($notification_id, Request $request) {
+            $notification = App\Notification::findOrFail($notification_id);
+            $notification->checked = true;
+            if ($notification->save()) {
+                return ['status' => 1];
+            }
+            return ['status' => 0];
+        });
     });
 });

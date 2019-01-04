@@ -87,15 +87,11 @@ class LoginController extends Controller
         //     $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
-        $savingAuthPassport = [
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ];
-
-        session(['savingAuthPassport' => $savingAuthPassport]);
+        /*
+         * Storing access token on Session (TODO: It can be stored on LocalStorage)
+         */
+        $access_token = $tokenResult->accessToken;
+        session(['access_token' => $access_token]);
 
         return redirect()->intended($this->redirectPath());
     }

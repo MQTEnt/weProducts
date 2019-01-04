@@ -6,6 +6,7 @@
   <title>@yield('site-title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="access_token" content="Bearer {{session()->get('access_token')}}">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="/css/user/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -51,6 +52,34 @@
 <script src="/js/user/bootstrap/bootstrap.min.js"></script>
 <!-- AdminLTE App //TMQ: Effect when resize -->
 <script src="/js/user/app.min.js"></script> 
+<script type="text/javascript">
+  $(document).ready(function () {
+    /*
+     * Get All Notifications
+     */
+    notifications = [];
+    var token = $("meta[name=access_token]").attr('content');
+    $.ajax({
+        url: "/api/auth/notifications",
+        headers: {"Authorization": token},
+        success: function(data) {
+          notifications = data;
+          $('#notification-quantity').text(notifications.length);
+          $('#notification-quantity-content').html('You have <strong>' + notifications.length + '</strong> notifications');
+          $.each(notifications, function( index, value ) {
+            $('#notifications-list').append(
+              '<li style="padding: 0 1rem; word-break: break-all;" meta-noti-id="' + value.id + '">' +
+              '<button class="checkNotiButton">' +
+              '<i style="cursor: pointer" class="fa fa-check-circle-o text-success"></i> ' +
+              '</button>' +
+              value.content.substring(0, 100) +
+              '</li>'
+            );
+          });
+        }
+    });
+  });
+</script>
 @yield('javascript-section')
 </body>
 </html>
